@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.OpenApi.Models;
 using SmartDwell.Users.Server.Constants;
 
 namespace SmartDwell.Users.Server.ApiGroups;
@@ -17,20 +18,22 @@ public static class UserGroup
         var group = endpoints.MapGroup(RouteConstants.UserData.Route);
         group.MapGet(RouteConstants.UserData.GetUsers, GetUsers)
             .WithName("GetUsers")
+            .WithSummary("Получение списка пользователей")
             .WithOpenApi();
         group.MapGet(RouteConstants.UserData.GetUserById, GetUserById)
             .WithName("GetUsersById")
+            .WithSummary("Получение пользователя по идентификатору")
             .WithOpenApi();
     }
 
     private static IResult GetUsers(DatabaseContext context)
     {
-        return Results.Ok(context.Users.ToList());
+        return TypedResults.Ok(context.Users.ToList());
     }
     
     private static async Task<IResult> GetUserById(DatabaseContext context, [FromRoute] Guid id)
     {
         var user = await context.Users.FindAsync(id);
-        return user is null ? Results.NotFound() : Results.Ok(user);
+        return user is null ? TypedResults.NotFound() : TypedResults.Ok(user);
     }
 }
