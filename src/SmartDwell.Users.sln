@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartDwell.Users", "SmartDwell.Users\SmartDwell.Users.csproj", "{84B14C56-FF5A-4381-8C8A-B080C24BF705}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartDwell.Models", "SmartDwell.Models\SmartDwell.Models.csproj", "{56E95C2A-1068-42FD-A62E-95E9B70DA100}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartDwell.Users.Server", "SmartDwell.Users.Server\SmartDwell.Users.Server.csproj", "{9C222C6C-21FF-4DC4-B09C-92A2C96DDB42}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -8,9 +10,13 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{84B14C56-FF5A-4381-8C8A-B080C24BF705}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{84B14C56-FF5A-4381-8C8A-B080C24BF705}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{84B14C56-FF5A-4381-8C8A-B080C24BF705}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{84B14C56-FF5A-4381-8C8A-B080C24BF705}.Release|Any CPU.Build.0 = Release|Any CPU
+		{56E95C2A-1068-42FD-A62E-95E9B70DA100}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{56E95C2A-1068-42FD-A62E-95E9B70DA100}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{56E95C2A-1068-42FD-A62E-95E9B70DA100}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{56E95C2A-1068-42FD-A62E-95E9B70DA100}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9C222C6C-21FF-4DC4-B09C-92A2C96DDB42}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9C222C6C-21FF-4DC4-B09C-92A2C96DDB42}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9C222C6C-21FF-4DC4-B09C-92A2C96DDB42}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9C222C6C-21FF-4DC4-B09C-92A2C96DDB42}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
