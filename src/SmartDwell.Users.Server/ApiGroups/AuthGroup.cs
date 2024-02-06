@@ -82,14 +82,14 @@ public static class AuthGroup
             string.IsNullOrEmpty(verifyCodeDto.Code))
             return TypedResults.BadRequest($"Некорректный тикет или код");
 
-        var ticket = context.AuthTickets.FirstOrDefault(t => t.Id == ticketId);
+        var ticket = await context.AuthTickets.FirstOrDefaultAsync(t => t.Id == ticketId);
         if (ticket is null)
             return TypedResults.NotFound($"Не найден тикет. TicketId: {ticketId}");
 
         if (ticket.Code != verifyCodeDto.Code)
             return TypedResults.Conflict($"Код не совпадает. Code: {verifyCodeDto.Code}");
 
-        var user = context.Users.FirstOrDefault(c => c.Phone == ticket.Login || c.Email == ticket.Login);
+        var user = await context.Users.FirstOrDefaultAsync(c => c.Phone == ticket.Login || c.Email == ticket.Login);
         if (user is null)
             return TypedResults.NotFound($"Пользователь с логином {ticket.Login} не найден");
 

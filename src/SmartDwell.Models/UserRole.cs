@@ -1,32 +1,32 @@
 namespace SmartDwell.Models;
 
 /// <summary>
-/// Роль пользователя
+/// Роль пользователя.
 /// </summary>
 public enum UserRole
 {
     /// <summary>
-    /// Житель
+    /// Житель.
     /// </summary>
     Resident,
     
     /// <summary>
-    /// Администратор
+    /// Администратор.
     /// </summary>
     Admin,
     
     /// <summary>
-    /// Менеджер
+    /// Менеджер.
     /// </summary>
     Manager,
     
     /// <summary>
-    /// Диспетчер
+    /// Диспетчер.
     /// </summary>
     Dispatcher,
     
     /// <summary>
-    /// Выездной специалист
+    /// Выездной специалист.
     /// </summary>
     FieldSpecialist
 }

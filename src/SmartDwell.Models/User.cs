@@ -1,67 +1,67 @@
 namespace SmartDwell.Models;
 
 /// <summary>
-/// Пользователь
+/// Пользователь.
 /// </summary>
 public class User
 {
     /// <summary>
-    /// Идентификатор
+    /// Идентификатор.
     /// </summary>
     public Guid Id { get; set; }
     
     /// <summary>
-    /// Имя
+    /// Имя.
     /// </summary>
     public string Name { get; set; } = string.Empty;
 	
     /// <summary>
-    /// Фамилия
+    /// Фамилия.
     /// </summary>
     public string Surname { get; set; } = string.Empty;
 	
     /// <summary>
-    /// Отчество
+    /// Отчество.
     /// </summary>
     public string? Patronymic { get; set; }
 
     /// <summary>
-    /// Полное имя
+    /// Полное имя.
     /// </summary>
     public string FullName => $"{Surname} {Name} {(string.IsNullOrEmpty(Patronymic) ? string.Empty : Patronymic[0] + '.')}".Trim();
     
     /// <summary>
-    /// Телефон
+    /// Телефон.
     /// </summary>
     public string Phone { get; set; } = string.Empty;
 
     /// <summary>
-    /// Электронная почта
+    /// Электронная почта.
     /// </summary>
     public string Email { get; set; } = string.Empty;
     
     /// <summary>
-    /// Роль пользователя в системе
+    /// Роль пользователя в системе.
     /// </summary>
     public UserRole Role { get; set; }
     
     /// <summary>
-    /// Примечание
+    /// Примечание.
     /// </summary>
     public string? Note { get; set; }
     
     /// <summary>
-    /// Токен обновления
+    /// Токен обновления.
     /// </summary>
     public string? RefreshToken { get; set; }
     
     /// <summary>
-    /// Дата истечения токена обновления
+    /// Дата истечения токена обновления.
     /// </summary>
     public DateTime? RefreshTokenExpires { get; set; }
     
     /// <summary>
-    /// Дата создания
+    /// Дата создания.
     /// </summary>
     public DateTime Created { get; set; } = DateTime.UtcNow;
 }

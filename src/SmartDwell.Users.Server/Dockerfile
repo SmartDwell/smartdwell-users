@@ -8,6 +8,8 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["SmartDwell.Users.Server/SmartDwell.Users.Server.csproj", "SmartDwell.Users.Server/"]
+COPY ["SmartDwell.Models/SmartDwell.Models.csproj", "SmartDwell.Models/"]
+COPY ["SmartDwell.Contracts/SmartDwell.Contracts.csproj", "SmartDwell.Contracts/"]
 RUN dotnet restore "SmartDwell.Users.Server/SmartDwell.Users.Server.csproj"
 COPY . .
 WORKDIR "/src/SmartDwell.Users.Server"
