@@ -4,6 +4,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartDwell.Models", "SmartD
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartDwell.Users.Server", "SmartDwell.Users.Server\SmartDwell.Users.Server.csproj", "{9C222C6C-21FF-4DC4-B09C-92A2C96DDB42}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartDwell.Contracts", "SmartDwell.Contracts\SmartDwell.Contracts.csproj", "{C4BDD925-65C6-4683-A2E8-913FA377C989}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{9C222C6C-21FF-4DC4-B09C-92A2C96DDB42}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9C222C6C-21FF-4DC4-B09C-92A2C96DDB42}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9C222C6C-21FF-4DC4-B09C-92A2C96DDB42}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C4BDD925-65C6-4683-A2E8-913FA377C989}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C4BDD925-65C6-4683-A2E8-913FA377C989}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C4BDD925-65C6-4683-A2E8-913FA377C989}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C4BDD925-65C6-4683-A2E8-913FA377C989}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

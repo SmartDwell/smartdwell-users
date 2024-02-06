@@ -5,14 +5,14 @@ using SmartDwell.Users.Server.Constants;
 namespace SmartDwell.Users.Server.ApiGroups;
 
 /// <summary>
-/// Группа методов для работы с пользователями
+/// Группа методов для работы с пользователями.
 /// </summary>
 public static class UserGroup
 {
     /// <summary>
-    /// Определение маршрутов работы с пользователями
+    /// Определение маршрутов работы с пользователями.
     /// </summary>
-    /// <param name="endpoints">Маршруты</param>
+    /// <param name="endpoints">Маршруты.</param>
     public static void MapUserGroup(this IEndpointRouteBuilder endpoints)
     {
         var group = endpoints.MapGroup(RouteConstants.UserData.Route);

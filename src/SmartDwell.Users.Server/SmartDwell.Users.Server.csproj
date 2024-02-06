@@ -9,11 +9,11 @@
     </PropertyGroup>
     
     <ItemGroup>
-        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.1"/>
+        <PackageReference Include="Adeptik.Hosting.AspNet.Extensions" Version="2.1.1" />
         <PackageReference Include="MailKit" Version="4.3.0" />
         <PackageReference Include="MimeKit" Version="4.3.0" />
+        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.1"/>
         <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="8.0.1" />
-
         <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.1" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.1">
             <PrivateAssets>all</PrivateAssets>
@@ -36,6 +36,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\SmartDwell.Contracts\SmartDwell.Contracts.csproj" />
       <ProjectReference Include="..\SmartDwell.Models\SmartDwell.Models.csproj" />
     </ItemGroup>
 

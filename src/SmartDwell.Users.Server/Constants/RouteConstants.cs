@@ -25,4 +25,30 @@ public static class RouteConstants
         /// </summary>
         public const string GetUserById = "/{id:guid}";
     }
+
+    /// <summary>
+    /// Данные аутентификации
+    /// </summary>
+    public static class AuthData
+    {
+        /// <summary>
+        /// Базовый маршрут
+        /// </summary>
+        public const string Route = "/api/auth";
+        
+        /// <summary>
+        /// Начало аутентификации
+        /// </summary>
+        public const string Start = "/start";
+        
+        /// <summary>
+        /// Завершение аутентификации
+        /// </summary>
+        public const string Complete = "/complete";
+        
+        /// <summary>
+        /// Обновление токенов
+        /// </summary>
+        public const string Refresh = "/refresh";
+    }
 }
