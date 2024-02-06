@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.OpenApi.Models;
+using Microsoft.AspNetCore.Authorization;
+using SmartDwell.Models;
 using SmartDwell.Users.Server.Constants;
 
 namespace SmartDwell.Users.Server.ApiGroups;
@@ -15,7 +16,9 @@ public static class UserGroup
     /// <param name="endpoints">Маршруты.</param>
     public static void MapUserGroup(this IEndpointRouteBuilder endpoints)
     {
-        var group = endpoints.MapGroup(RouteConstants.UserData.Route);
+        var group = endpoints
+            .MapGroup(RouteConstants.UserData.Route)
+            .RequireAuthorization();
         group.MapGet(RouteConstants.UserData.GetUsers, GetUsers)
             .WithName("GetUsers")
             .WithSummary("Получение списка пользователей")

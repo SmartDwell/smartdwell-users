@@ -1,6 +1,7 @@
 using System.Text.Json.Serialization;
 using Adeptik.Hosting.AspNet.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
+using Seljmov.AspNet.Commons.Helpers;
 using SmartDwell.Users.Server;
 using SmartDwell.Users.Server.ApiGroups;
 using SmartDwell.Users.Server.Options;
@@ -31,7 +32,7 @@ builder.Services.AddOptions<ApplicationOptions>()
 builder.Services.AddScoped<IJwtHelper, JwtHelper>();
 builder.Services.AddScoped<IEmailCodeSender, EmailSenderService>();
 
-var app = builder.Build();
+var app = builder.BuildWebApplication();
 
 if (app.Environment.IsDevelopment())
 {
