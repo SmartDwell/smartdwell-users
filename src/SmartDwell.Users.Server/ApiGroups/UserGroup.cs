@@ -1,5 +1,7 @@
+using Mapster;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
+using SmartDwell.Contracts.Users;
 using SmartDwell.Models;
 using SmartDwell.Users.Server.Constants;
 
@@ -20,10 +22,12 @@ public static class UserGroup
             .MapGroup(RouteConstants.UserData.Route)
             .RequireAuthorization();
         group.MapGet(RouteConstants.UserData.GetUsers, GetUsers)
+            .Produces<UserDto[]>()
             .WithName("GetUsers")
             .WithSummary("Получение списка пользователей")
             .WithOpenApi();
         group.MapGet(RouteConstants.UserData.GetUserById, GetUserById)
+            .Produces<UserDto>()
             .WithName("GetUsersById")
             .WithSummary("Получение пользователя по идентификатору")
             .WithOpenApi();
@@ -31,12 +35,12 @@ public static class UserGroup
 
     private static IResult GetUsers(DatabaseContext context)
     {
-        return TypedResults.Ok(context.Users.ToList());
+        return TypedResults.Ok(context.Users.Adapt<UserDto[]>());
     }
     
     private static async Task<IResult> GetUserById(DatabaseContext context, [FromRoute] Guid id)
     {
         var user = await context.Users.FindAsync(id);
-        return user is null ? TypedResults.NotFound() : TypedResults.Ok(user);
+        return user is null ? TypedResults.NotFound() : TypedResults.Ok(user.Adapt<UserDto>());
     }
 }

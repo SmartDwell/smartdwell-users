@@ -10,6 +10,7 @@
     
     <ItemGroup>
         <PackageReference Include="Adeptik.Hosting.AspNet.Extensions" Version="2.1.1" />
+        <PackageReference Include="Mapster" Version="7.4.0" />
         <PackageReference Include="MailKit" Version="4.3.0" />
         <PackageReference Include="MimeKit" Version="4.3.0" />
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.1"/>

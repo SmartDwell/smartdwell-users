@@ -6,4 +6,8 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\SmartDwell.Models\SmartDwell.Models.csproj" />
+    </ItemGroup>
+
 </Project>

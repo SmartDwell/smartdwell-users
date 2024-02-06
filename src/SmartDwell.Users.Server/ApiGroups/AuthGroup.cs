@@ -1,3 +1,4 @@
+using Mapster;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Seljmov.AspNet.Commons.Options;
@@ -105,14 +106,7 @@ public static class AuthGroup
                 AccessToken = jwtHelper.CreateAccessToken(user, jwtOptions.AccessTokenLifetime),
                 RefreshToken = user.RefreshToken,
             },
-            User = new UserDto
-            {
-                Id = user.Id,
-                Email = user.Email,
-                Phone = user.Phone,
-                Name = user.Name,
-                Surname = user.Surname,
-            },
+            User = user.Adapt<UserDto>()
         };
         return TypedResults.Ok(authCompletedDto);
     }
