@@ -21,12 +21,12 @@ public static class UserGroup
         var group = endpoints
             .MapGroup(RouteConstants.UserData.Route)
             .RequireAuthorization();
-        group.MapGet(RouteConstants.UserData.GetUsers, GetUsers)
+        group.MapGet(RouteConstants.UserData.Users, GetUsers)
             .Produces<UserDto[]>()
             .WithName("GetUsers")
             .WithSummary("Получение списка пользователей")
             .WithOpenApi();
-        group.MapGet(RouteConstants.UserData.GetUserById, GetUserById)
+        group.MapGet(RouteConstants.UserData.UserById, GetUserById)
             .Produces<UserDto>()
             .WithName("GetUsersById")
             .WithSummary("Получение пользователя по идентификатору")

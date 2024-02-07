@@ -18,12 +18,12 @@ public static class RouteConstants
         /// <summary>
         /// Получение списка пользователей
         /// </summary>
-        public const string GetUsers = "/";
+        public const string Users = "/";
 
         /// <summary>
         /// Получение пользователя по идентификатору
         /// </summary>
-        public const string GetUserById = "/{id:guid}";
+        public const string UserById = "/{id:guid}";
     }
 
     /// <summary>
