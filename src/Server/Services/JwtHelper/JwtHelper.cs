@@ -52,7 +52,7 @@ public class JwtHelper : IJwtHelper
         {
             new Claim(ClaimsIdentity.DefaultIssuer, user.Id.ToString()),
             new Claim(ClaimsIdentity.DefaultNameClaimType, user.FullName),
-            new Claim(ClaimsIdentity.DefaultRoleClaimType, user.Role.ToString()),
+            //new Claim(ClaimsIdentity.DefaultRoleClaimType, user.Role.ToString()),
             new Claim(ClaimTypes.Email, user.Email),
             new Claim(ClaimTypes.MobilePhone, user.Phone),
         });

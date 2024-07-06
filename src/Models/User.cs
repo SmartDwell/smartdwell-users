@@ -41,11 +41,6 @@ public class User
     public string Email { get; set; } = string.Empty;
     
     /// <summary>
-    /// Роль пользователя в системе.
-    /// </summary>
-    public UserRole Role { get; set; }
-    
-    /// <summary>
     /// Примечание.
     /// </summary>
     public string? Note { get; set; }
@@ -61,7 +56,17 @@ public class User
     public DateTime? RefreshTokenExpires { get; set; }
     
     /// <summary>
+    /// Признак блокировки.
+    /// </summary>
+    public bool IsBlocked { get; set; }
+    
+    /// <summary>
+    /// Причина блокировки.
+    /// </summary>
+    public string? BlockReason { get; set; }
+    
+    /// <summary>
     /// Дата создания.
     /// </summary>
-    public DateTime Created { get; set; } = DateTime.UtcNow;
+    public DateTime Created { get; init; } = DateTime.UtcNow;
 }

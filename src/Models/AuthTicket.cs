@@ -30,6 +30,11 @@ public class AuthTicket
     /// Дата истечения тикета.
     /// </summary>
     public DateTime ExpiresAt { get; set; }
+    
+    /// <summary>
+    /// Был ли тикет использован.
+    /// </summary>
+    public bool IsUsed { get; set; }
 	
     /// <summary>
     /// Создать тикет.

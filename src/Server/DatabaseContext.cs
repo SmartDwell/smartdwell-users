@@ -13,12 +13,12 @@ public sealed class DatabaseContext : DbContext
     /// <summary>
     /// Коллекция тикетов авторизации
     /// </summary>
-    public DbSet<AuthTicket> AuthTickets { get; set; } = null!;
+    public DbSet<AuthTicket> AuthTickets { get; init; } = null!;
     
     /// <summary>
     /// Коллекция пользователей
     /// </summary>
-    public DbSet<User> Users { get; set; } = null!;
+    public DbSet<User> Users { get; init; } = null!;
 
     #endregion
     
@@ -46,6 +46,7 @@ public sealed class DatabaseContext : DbContext
             entity.Property(e => e.Code).IsRequired();
             entity.Property(e => e.Login).IsRequired();
             entity.Property(e => e.ExpiresAt).IsRequired();
+            entity.Property(e => e.IsUsed).IsRequired().HasDefaultValue(false);
         });
         
         modelBuilder.Entity<User>(entity =>
@@ -56,10 +57,12 @@ public sealed class DatabaseContext : DbContext
             entity.Property(e => e.Patronymic);
             entity.Property(e => e.Phone).IsRequired();
             entity.Property(e => e.Email).IsRequired();
-            entity.Property(e => e.Role).IsRequired();
+            //entity.Property(e => e.Role).IsRequired();
             entity.Property(e => e.Note);
             entity.Property(e => e.RefreshToken);
             entity.Property(e => e.RefreshTokenExpires);
+            entity.Property(e => e.IsBlocked).IsRequired().HasDefaultValue(false);
+            entity.Property(e => e.BlockReason);
             entity.Property(e => e.Created).IsRequired().HasDefaultValueSql("now()");
             
             entity.HasData(new List<User>
@@ -67,7 +70,7 @@ public sealed class DatabaseContext : DbContext
                 new()
                 {
                     Id = Guid.NewGuid(),
-                    Role = UserRole.Resident,
+                    //Role = UserRole.Resident,
                     Note = "Создано автоматически",
                     Phone = "79887897788",
                     Email = "17moron@bk.ru",
@@ -77,7 +80,7 @@ public sealed class DatabaseContext : DbContext
                 new()
                 {
                     Id = Guid.NewGuid(),
-                    Role = UserRole.Resident,
+                    //Role = UserRole.Resident,
                     Note = "Создано автоматически",
                     Phone = "79887893311",
                     Email = "guest@example.com",
