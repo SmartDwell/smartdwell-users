@@ -118,12 +118,8 @@ public static class AuthGroup
 
         var authCompletedDto = new AuthCompletedDto
         {
-            Tokens = new TokensDto
-            {
-                AccessToken = jwtHelper.CreateAccessToken(user, jwtOptions.AccessTokenLifetime),
-                RefreshToken = user.RefreshToken,
-            },
-            User = user.Adapt<UserDto>()
+            AccessToken = jwtHelper.CreateAccessToken(user, jwtOptions.AccessTokenLifetime),
+            RefreshToken = user.RefreshToken,
         };
         return TypedResults.Ok(authCompletedDto);
     }

@@ -2,6 +2,7 @@ using System.Text.Json.Serialization;
 using Adeptik.Hosting.AspNet.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using Seljmov.AspNet.Commons.Helpers;
+using Seljmov.AspNet.Commons.Options;
 using Server;
 using Server.ApiGroups;
 using Server.Options;
@@ -11,6 +12,17 @@ using Server.Services.JwtHelper;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Добавление CORS политики
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", builder =>
+    {
+        builder.AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader();
+    });
+});
+    
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
     {
@@ -35,7 +47,11 @@ builder.Services.AddOptions<ApplicationOptions>()
 builder.Services.AddScoped<IJwtHelper, JwtHelper>();
 builder.Services.AddScoped<IEmailCodeSender, EmailSenderService>();
 
-var app = builder.BuildWebApplication();
+var app = builder.BuildWebApplication(
+    buildOptions: new BuildOptions
+    {
+        UseCors = true,
+    });
 
 if (app.Environment.IsDevelopment())
 {
@@ -43,7 +59,12 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+// Использование HTTPS перенаправления
 app.UseHttpsRedirection();
+
+// Использование CORS
+app.UseCors("AllowAll");
+
 app.MapUserGroup();
 app.MapAuthGroup();
 
