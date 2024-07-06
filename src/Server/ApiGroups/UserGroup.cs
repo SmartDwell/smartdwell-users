@@ -1,8 +1,6 @@
 using Contracts.Users;
 using Mapster;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authorization;
-using Models;
 using Server.Constants;
 
 namespace Server.ApiGroups;

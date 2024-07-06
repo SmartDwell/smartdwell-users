@@ -47,7 +47,8 @@ public class AuthTicket
         return new AuthTicket
         {
             Id = Guid.NewGuid(),
-            Code = new Random().Next(100000, 999999).ToString(),
+            //Code = new Random().Next(100000, 999999).ToString(),
+            Code = "111111",
             Login = login,
             DeviceDescription = deviceDescription,
             ExpiresAt = DateTime.UtcNow.AddMinutes(10)

@@ -1,3 +1,4 @@
+using System.Text;
 using Contracts.Auth;
 using Contracts.Users;
 using Mapster;
@@ -47,13 +48,22 @@ public static class AuthGroup
             return TypedResults.StatusCode(StatusCodes.Status501NotImplemented);
 
         if (string.IsNullOrEmpty(requestCodeDto.Login))
-            return TypedResults.BadRequest($"Поле {nameof(requestCodeDto.Login)} не может быть пустым");
+            return TypedResults.Text("Не указан логин.", statusCode: StatusCodes.Status400BadRequest);
 
         var user = await context.Users.FirstOrDefaultAsync(c =>
             c.Phone == requestCodeDto.Login || c.Email == requestCodeDto.Login);
         if (user is null)
-            return TypedResults.NotFound($"Пользователь с логином {requestCodeDto.Login} не найден");
+            return TypedResults.Text($"Пользователь с логином {requestCodeDto.Login} не найден.",
+                statusCode: StatusCodes.Status404NotFound);
 
+        if (user.IsBlocked)
+        {
+            var messageBuilder = new StringBuilder("Пользователь заблокирован.");
+            if (!string.IsNullOrEmpty(user.BlockReason))
+                messageBuilder.Append($" Причина: {user.BlockReason}.");
+            return TypedResults.Text(messageBuilder.ToString(), statusCode: StatusCodes.Status403Forbidden);
+        }
+        
         try
         {
             var ticket = AuthTicket.Create(requestCodeDto.Login);
@@ -66,7 +76,7 @@ public static class AuthGroup
                 TicketId = ticket.Id.ToString()
             });
         }
-        catch (Exception ex)
+        catch (Exception _)
         {
             return TypedResults.StatusCode(StatusCodes.Status500InternalServerError);
         }
@@ -80,23 +90,30 @@ public static class AuthGroup
         if (string.IsNullOrEmpty(verifyCodeDto.TicketId) ||
             !Guid.TryParse(verifyCodeDto.TicketId, out var ticketId) ||
             string.IsNullOrEmpty(verifyCodeDto.Code))
-            return TypedResults.BadRequest($"Некорректный тикет или код");
+            return TypedResults.Text($"Некорректный тикет или код.", statusCode: StatusCodes.Status400BadRequest);
 
         var ticket = await context.AuthTickets.FirstOrDefaultAsync(t => t.Id == ticketId);
         if (ticket is null)
-            return TypedResults.NotFound($"Не найден тикет. TicketId: {ticketId}");
+            return TypedResults.Text($"Не найден тикет. TicketId: {ticketId}.", statusCode: StatusCodes.Status404NotFound);
 
+        if (ticket.IsUsed)
+            return TypedResults.Text($"Тикет уже использован. TicketId: {ticketId}.", statusCode: StatusCodes.Status409Conflict);
+        
+        if (ticket.ExpiresAt < DateTime.UtcNow)
+            return TypedResults.Text($"Тикет просрочен. TicketId: {ticketId}.", statusCode: StatusCodes.Status410Gone);
+        
         if (ticket.Code != verifyCodeDto.Code)
-            return TypedResults.Conflict($"Код не совпадает. Code: {verifyCodeDto.Code}");
+            return TypedResults.Text($"Код не совпадает. Code: {verifyCodeDto.Code}.", statusCode: StatusCodes.Status409Conflict);
 
         var user = await context.Users.FirstOrDefaultAsync(c => c.Phone == ticket.Login || c.Email == ticket.Login);
         if (user is null)
-            return TypedResults.NotFound($"Пользователь с логином {ticket.Login} не найден");
+            return TypedResults.Text($"Пользователь с логином {ticket.Login} не найден.", statusCode: StatusCodes.Status404NotFound);
 
         user.RefreshToken = jwtHelper.CreateRefreshToken();
         user.RefreshTokenExpires = DateTime.UtcNow.AddMinutes(jwtOptions.RefreshTokenLifetime);
         context.Users.Update(user);
-        context.AuthTickets.Remove(ticket);
+        ticket.IsUsed = true;
+        context.AuthTickets.Update(ticket);
         await context.SaveChangesAsync();
 
         var authCompletedDto = new AuthCompletedDto
