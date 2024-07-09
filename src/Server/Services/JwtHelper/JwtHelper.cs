@@ -18,8 +18,9 @@ public interface IJwtHelper
     /// </summary>
     /// <param name="user">Пользователь.</param>
     /// <param name="minutesValid">Время действия токена.</param>
+    /// <param name="deviceDescription">Описание устройства.</param>
     /// <returns>Токен доступа.</returns>
-    string CreateAccessToken(User user, int minutesValid);
+    string CreateAccessToken(User user, int minutesValid, string? deviceDescription = "");
 
     /// <summary>
     /// Создать токен обновления.
@@ -45,8 +46,8 @@ public class JwtHelper : IJwtHelper
         _jwtOptions = jwtOptions;
     }
     
-    /// <inheritdoc cref="IJwtHelper.CreateAccessToken(User, int)" />
-    public string CreateAccessToken(User user, int minutesValid)
+    /// <inheritdoc cref="IJwtHelper.CreateAccessToken(User, int, string?)" />
+    public string CreateAccessToken(User user, int minutesValid, string? deviceDescription = "")
     {
         var claims = new[]
         {
@@ -54,6 +55,7 @@ public class JwtHelper : IJwtHelper
             new Claim(ClaimTypes.Name, user.FullName),
             new Claim(ClaimTypes.Email, user.Email),
             new Claim(ClaimTypes.MobilePhone, user.Phone),
+            new Claim(ClaimTypes.System, deviceDescription ?? string.Empty),
         };
 
         var securityToken = new JwtSecurityToken(

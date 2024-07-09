@@ -1,5 +1,3 @@
-using Models;
-
 namespace Contracts.Users;
 
 /// <summary>

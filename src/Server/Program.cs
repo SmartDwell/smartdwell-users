@@ -59,10 +59,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-// Использование HTTPS перенаправления
 app.UseHttpsRedirection();
 
-// Использование CORS
 app.UseCors("AllowAll");
 
 app.MapUserGroup();

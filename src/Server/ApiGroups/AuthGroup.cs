@@ -1,11 +1,9 @@
 using System.Text;
-using Contracts.Auth;
-using Contracts.Users;
-using Mapster;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Seljmov.AspNet.Commons.Options;
 using Models;
+using Seljmov.Blazor.Identity.Shared;
 using Server.Constants;
 using Server.Services.CodeSender;
 using Server.Services.JwtHelper;
@@ -23,14 +21,19 @@ public static class AuthGroup
     /// <param name="endpoints">Маршруты.</param>
     public static void MapAuthGroup(this IEndpointRouteBuilder endpoints)
     {
-        var group = endpoints.MapGroup(RouteConstants.AuthData.Route);
+        var group = endpoints.MapGroup(RouteConstants.AuthData.Route)
+            .RequireAuthorization(AuthPolicies.AuthPolicy);
         group.MapPost(RouteConstants.AuthData.Start, Start)
             .WithName("StartAuth")
-            .WithSummary("Начало аутентификации")
+            .WithSummary("Начало аутентификации.")
             .WithOpenApi();
         group.MapPost(RouteConstants.AuthData.Complete, Complete)
             .WithName("CompleteAuth")
-            .WithSummary("Завершение аутентификации")
+            .WithSummary("Завершение аутентификации.")
+            .WithOpenApi();
+        group.MapPost(RouteConstants.AuthData.Refresh, RefreshTokens)
+            .WithName("RefreshTokens")
+            .WithSummary("Обновление токенов.")
             .WithOpenApi();
     }
 
@@ -67,6 +70,7 @@ public static class AuthGroup
         try
         {
             var ticket = AuthTicket.Create(requestCodeDto.Login);
+            ticket.DeviceDescription = requestCodeDto.DeviceDescription;
             await codeSender.Send(ticket);
             await context.AuthTickets.AddAsync(ticket);
             await context.SaveChangesAsync();
@@ -118,9 +122,37 @@ public static class AuthGroup
 
         var authCompletedDto = new AuthCompletedDto
         {
-            AccessToken = jwtHelper.CreateAccessToken(user, jwtOptions.AccessTokenLifetime),
+            AccessToken = jwtHelper.CreateAccessToken(user, jwtOptions.AccessTokenLifetime, ticket.DeviceDescription),
             RefreshToken = user.RefreshToken,
         };
         return TypedResults.Ok(authCompletedDto);
+    }
+    
+    private static async Task<IResult> RefreshTokens(DatabaseContext context,
+        [FromBody] RefreshTokensDto refreshTokensDto,
+        [FromServices] IJwtHelper jwtHelper,
+        [FromServices] JwtOptions jwtOptions)
+    {
+        if (string.IsNullOrEmpty(refreshTokensDto.RefreshToken))
+            return TypedResults.Text("Не указан токен обновления.", statusCode: StatusCodes.Status400BadRequest);
+
+        var user = await context.Users.FirstOrDefaultAsync(c => c.RefreshToken == refreshTokensDto.RefreshToken);
+        if (user is null)
+            return TypedResults.Text("Пользователь не найден.", statusCode: StatusCodes.Status404NotFound);
+
+        if (user.RefreshTokenExpires < DateTime.UtcNow)
+            return TypedResults.Text("Токен обновления просрочен.", statusCode: StatusCodes.Status410Gone);
+
+        user.RefreshToken = jwtHelper.CreateRefreshToken();
+        user.RefreshTokenExpires = DateTime.UtcNow.AddMinutes(jwtOptions.RefreshTokenLifetime);
+        context.Users.Update(user);
+        await context.SaveChangesAsync();
+
+        var tokensDto = new TokensDto
+        {
+            AccessToken = jwtHelper.CreateAccessToken(user, jwtOptions.AccessTokenLifetime, refreshTokensDto.DeviceDescription),
+            RefreshToken = user.RefreshToken,
+        };
+        return TypedResults.Ok(tokensDto);
     }
 }

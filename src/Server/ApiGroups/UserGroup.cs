@@ -1,6 +1,7 @@
 using Contracts.Users;
 using Mapster;
 using Microsoft.AspNetCore.Mvc;
+using Seljmov.Blazor.Identity.Shared;
 using Server.Constants;
 
 namespace Server.ApiGroups;
@@ -18,16 +19,16 @@ public static class UserGroup
     {
         var group = endpoints
             .MapGroup(RouteConstants.UserData.Route)
-            .RequireAuthorization();
+            .RequireAuthorization(AuthPolicies.UsersPolicy);
         group.MapGet(RouteConstants.UserData.Users, GetUsers)
             .Produces<UserDto[]>()
             .WithName("GetUsers")
-            .WithSummary("Получение списка пользователей")
+            .WithSummary("Получение списка пользователей.")
             .WithOpenApi();
         group.MapGet(RouteConstants.UserData.UserById, GetUserById)
             .Produces<UserDto>()
             .WithName("GetUsersById")
-            .WithSummary("Получение пользователя по идентификатору")
+            .WithSummary("Получение пользователя по идентификатору.")
             .WithOpenApi();
     }
 
