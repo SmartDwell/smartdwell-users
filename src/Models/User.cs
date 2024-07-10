@@ -11,6 +11,16 @@ public class User
     public Guid Id { get; set; }
     
     /// <summary>
+    /// Идентификатор роли.
+    /// </summary>
+    public Guid RoleId { get; set; }
+    
+    /// <summary>
+    /// Роль.
+    /// </summary>
+    public virtual Role Role { get; set; } = null!;
+    
+    /// <summary>
     /// Имя.
     /// </summary>
     public string Name { get; set; } = string.Empty;

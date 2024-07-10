@@ -3,25 +3,14 @@ using Adeptik.Hosting.AspNet.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using Seljmov.AspNet.Commons.Helpers;
 using Seljmov.AspNet.Commons.Options;
+using Seljmov.Blazor.Identity.Shared;
 using Server;
 using Server.ApiGroups;
 using Server.Options;
-using Server.Services;
 using Server.Services.CodeSender;
 using Server.Services.JwtHelper;
 
 var builder = WebApplication.CreateBuilder(args);
-
-// Добавление CORS политики
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("AllowAll", builder =>
-    {
-        builder.AllowAnyOrigin()
-            .AllowAnyMethod()
-            .AllowAnyHeader();
-    });
-});
     
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
@@ -51,6 +40,7 @@ var app = builder.BuildWebApplication(
     buildOptions: new BuildOptions
     {
         UseCors = true,
+        AuthenticationPolicies = AuthPolicies.AllPolicies,
     });
 
 if (app.Environment.IsDevelopment())
@@ -60,8 +50,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
-app.UseCors("AllowAll");
 
 app.MapUserGroup();
 app.MapAuthGroup();

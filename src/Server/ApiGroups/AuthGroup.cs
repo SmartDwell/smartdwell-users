@@ -21,8 +21,7 @@ public static class AuthGroup
     /// <param name="endpoints">Маршруты.</param>
     public static void MapAuthGroup(this IEndpointRouteBuilder endpoints)
     {
-        var group = endpoints.MapGroup(RouteConstants.AuthData.Route)
-            .RequireAuthorization(AuthPolicies.AuthPolicy);
+        var group = endpoints.MapGroup(RouteConstants.AuthData.Route);
         group.MapPost(RouteConstants.AuthData.Start, Start)
             .WithName("StartAuth")
             .WithSummary("Начало аутентификации.")
@@ -53,8 +52,9 @@ public static class AuthGroup
         if (string.IsNullOrEmpty(requestCodeDto.Login))
             return TypedResults.Text("Не указан логин.", statusCode: StatusCodes.Status400BadRequest);
 
-        var user = await context.Users.FirstOrDefaultAsync(c =>
-            c.Phone == requestCodeDto.Login || c.Email == requestCodeDto.Login);
+        var user = await context.Users
+            .Include(c => c.Role)
+            .FirstOrDefaultAsync(c => c.Phone == requestCodeDto.Login || c.Email == requestCodeDto.Login);
         if (user is null)
             return TypedResults.Text($"Пользователь с логином {requestCodeDto.Login} не найден.",
                 statusCode: StatusCodes.Status404NotFound);
@@ -109,7 +109,9 @@ public static class AuthGroup
         if (ticket.Code != verifyCodeDto.Code)
             return TypedResults.Text($"Код не совпадает. Code: {verifyCodeDto.Code}.", statusCode: StatusCodes.Status409Conflict);
 
-        var user = await context.Users.FirstOrDefaultAsync(c => c.Phone == ticket.Login || c.Email == ticket.Login);
+        var user = await context.Users
+            .Include(c => c.Role)
+            .FirstOrDefaultAsync(c => c.Phone == ticket.Login || c.Email == ticket.Login);
         if (user is null)
             return TypedResults.Text($"Пользователь с логином {ticket.Login} не найден.", statusCode: StatusCodes.Status404NotFound);
 
@@ -136,7 +138,9 @@ public static class AuthGroup
         if (string.IsNullOrEmpty(refreshTokensDto.RefreshToken))
             return TypedResults.Text("Не указан токен обновления.", statusCode: StatusCodes.Status400BadRequest);
 
-        var user = await context.Users.FirstOrDefaultAsync(c => c.RefreshToken == refreshTokensDto.RefreshToken);
+        var user = await context.Users
+            .Include(c => c.Role)
+            .FirstOrDefaultAsync(c => c.RefreshToken == refreshTokensDto.RefreshToken);
         if (user is null)
             return TypedResults.Text("Пользователь не найден.", statusCode: StatusCodes.Status404NotFound);
 
