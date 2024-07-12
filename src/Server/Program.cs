@@ -36,6 +36,9 @@ builder.Services.AddOptions<ApplicationOptions>()
 builder.Services.AddScoped<IJwtHelper, JwtHelper>();
 builder.Services.AddScoped<IEmailCodeSender, EmailSenderService>();
 
+builder.Services.AddControllersWithViews();
+builder.Services.AddRazorPages();
+
 var app = builder.BuildWebApplication(
     buildOptions: new BuildOptions
     {
@@ -51,7 +54,15 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseBlazorFrameworkFiles();
+app.UseStaticFiles();
+app.UseRouting();
+
 app.MapUserGroup();
 app.MapAuthGroup();
+
+app.MapRazorPages();
+app.MapControllers();
+app.MapFallbackToFile("index.html");
 
 app.Run();
