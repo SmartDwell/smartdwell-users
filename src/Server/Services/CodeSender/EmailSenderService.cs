@@ -37,6 +37,7 @@ public class EmailSenderService : IEmailCodeSender
             Text = string.Format(_codeTemplateOptions.Body, ticket.Code)
         };
 
+        // TODO: Убрать исключение, добавить очередь и логирование
         using var client = new SmtpClient();
         try
         {
@@ -49,7 +50,7 @@ public class EmailSenderService : IEmailCodeSender
         catch (Exception e)
         {
             Console.WriteLine(e);
-            throw new Exception("Ошибка отправки сообщения");
+            throw new Exception("Ошибка отправки сообщения.");
         }
 
         return true;

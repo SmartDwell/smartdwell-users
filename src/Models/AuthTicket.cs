@@ -47,6 +47,7 @@ public class AuthTicket
         return new AuthTicket
         {
             Id = Guid.NewGuid(),
+            // TODO: Вернуть при деплое
             //Code = new Random().Next(100000, 999999).ToString(),
             Code = "111111",
             Login = login,

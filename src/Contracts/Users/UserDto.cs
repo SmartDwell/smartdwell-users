@@ -29,4 +29,9 @@ public class UserDto
     /// Фамилия.
     /// </summary>
     public string Surname { get; set; } = string.Empty;
+    
+    /// <summary>
+    /// Роль.
+    /// </summary>
+    public string Role { get; set; } = string.Empty;
 }

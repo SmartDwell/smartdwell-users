@@ -1,6 +1,8 @@
 using Contracts.Users;
 using Mapster;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Seljmov.Blazor.Identity.Shared;
 using Server.Constants;
 
@@ -32,14 +34,19 @@ public static class UserGroup
             .WithOpenApi();
     }
 
-    private static IResult GetUsers(DatabaseContext context)
+    private static Ok<UserDto[]> GetUsers(DatabaseContext context)
     {
-        return TypedResults.Ok(context.Users.Adapt<UserDto[]>());
+        var users = context.Users
+            .Include(user => user.Role)
+            .Adapt<UserDto[]>();
+        return TypedResults.Ok(users);
     }
     
     private static async Task<IResult> GetUserById(DatabaseContext context, [FromRoute] Guid id)
     {
-        var user = await context.Users.FindAsync(id);
+        var user = await context.Users
+            .Include(user => user.Role)
+            .FirstOrDefaultAsync(user => user.Id == id);
         return user is null ? TypedResults.NotFound() : TypedResults.Ok(user.Adapt<UserDto>());
     }
 }
