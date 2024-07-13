@@ -39,6 +39,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\..\..\Github\seljmov-aspnet-common\src\Seljmov.AspNet.Commons\Seljmov.AspNet.Commons.csproj" />
+      <ProjectReference Include="..\Client\Client.csproj" />
       <ProjectReference Include="..\Contracts\Contracts.csproj" />
       <ProjectReference Include="..\Models\Models.csproj" />
       <ProjectReference Include="C:\Users\diana\RiderProjects\Seljmov.Blazor.Identity\Shared\Shared.csproj" />

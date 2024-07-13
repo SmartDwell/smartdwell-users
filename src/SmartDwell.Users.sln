@@ -10,6 +10,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared", "C:\Users\diana\Ri
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Seljmov.AspNet.Commons", "..\..\..\Github\seljmov-aspnet-common\src\Seljmov.AspNet.Commons\Seljmov.AspNet.Commons.csproj", "{D4E651DF-3F60-464D-991E-B3D5DB9BD08E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Client", "Client\Client.csproj", "{8BC01ACD-B9FD-487A-A75C-A943AC26A16D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,5 +38,9 @@ Global
 		{D4E651DF-3F60-464D-991E-B3D5DB9BD08E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D4E651DF-3F60-464D-991E-B3D5DB9BD08E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D4E651DF-3F60-464D-991E-B3D5DB9BD08E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8BC01ACD-B9FD-487A-A75C-A943AC26A16D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8BC01ACD-B9FD-487A-A75C-A943AC26A16D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8BC01ACD-B9FD-487A-A75C-A943AC26A16D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8BC01ACD-B9FD-487A-A75C-A943AC26A16D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
