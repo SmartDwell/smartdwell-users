@@ -1,5 +1,3 @@
-using Models;
-
 namespace Contracts.Users;
 
 /// <summary>
@@ -35,5 +33,5 @@ public class UserDto
     /// <summary>
     /// Роль.
     /// </summary>
-    public UserRole Role { get; set; }
+    public string Role { get; set; } = string.Empty;
 }

@@ -2,15 +2,16 @@ using System.Text.Json.Serialization;
 using Adeptik.Hosting.AspNet.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using Seljmov.AspNet.Commons.Helpers;
+using Seljmov.AspNet.Commons.Options;
+using Seljmov.Blazor.Identity.Shared;
 using Server;
 using Server.ApiGroups;
 using Server.Options;
-using Server.Services;
 using Server.Services.CodeSender;
 using Server.Services.JwtHelper;
 
 var builder = WebApplication.CreateBuilder(args);
-
+    
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
     {
@@ -35,7 +36,15 @@ builder.Services.AddOptions<ApplicationOptions>()
 builder.Services.AddScoped<IJwtHelper, JwtHelper>();
 builder.Services.AddScoped<IEmailCodeSender, EmailSenderService>();
 
-var app = builder.BuildWebApplication();
+builder.Services.AddControllersWithViews();
+builder.Services.AddRazorPages();
+
+var app = builder.BuildWebApplication(
+    buildOptions: new BuildOptions
+    {
+        UseCors = true,
+        AuthenticationPolicies = AuthPolicies.AllPolicies,
+    });
 
 if (app.Environment.IsDevelopment())
 {
@@ -44,7 +53,16 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseBlazorFrameworkFiles();
+app.UseStaticFiles();
+app.UseRouting();
+
 app.MapUserGroup();
 app.MapAuthGroup();
+
+app.MapRazorPages();
+app.MapControllers();
+app.MapFallbackToFile("index.html");
 
 app.Run();

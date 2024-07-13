@@ -1,8 +1,9 @@
 using Contracts.Users;
 using Mapster;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authorization;
-using Models;
+using Microsoft.EntityFrameworkCore;
+using Seljmov.Blazor.Identity.Shared;
 using Server.Constants;
 
 namespace Server.ApiGroups;
@@ -20,27 +21,32 @@ public static class UserGroup
     {
         var group = endpoints
             .MapGroup(RouteConstants.UserData.Route)
-            .RequireAuthorization();
+            .RequireAuthorization(AuthPolicies.UsersPolicy);
         group.MapGet(RouteConstants.UserData.Users, GetUsers)
             .Produces<UserDto[]>()
             .WithName("GetUsers")
-            .WithSummary("Получение списка пользователей")
+            .WithSummary("Получение списка пользователей.")
             .WithOpenApi();
         group.MapGet(RouteConstants.UserData.UserById, GetUserById)
             .Produces<UserDto>()
             .WithName("GetUsersById")
-            .WithSummary("Получение пользователя по идентификатору")
+            .WithSummary("Получение пользователя по идентификатору.")
             .WithOpenApi();
     }
 
-    private static IResult GetUsers(DatabaseContext context)
+    private static Ok<UserDto[]> GetUsers(DatabaseContext context)
     {
-        return TypedResults.Ok(context.Users.Adapt<UserDto[]>());
+        var users = context.Users
+            .Include(user => user.Role)
+            .Adapt<UserDto[]>();
+        return TypedResults.Ok(users);
     }
     
     private static async Task<IResult> GetUserById(DatabaseContext context, [FromRoute] Guid id)
     {
-        var user = await context.Users.FindAsync(id);
+        var user = await context.Users
+            .Include(user => user.Role)
+            .FirstOrDefaultAsync(user => user.Id == id);
         return user is null ? TypedResults.NotFound() : TypedResults.Ok(user.Adapt<UserDto>());
     }
 }

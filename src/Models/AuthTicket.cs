@@ -30,6 +30,11 @@ public class AuthTicket
     /// Дата истечения тикета.
     /// </summary>
     public DateTime ExpiresAt { get; set; }
+    
+    /// <summary>
+    /// Был ли тикет использован.
+    /// </summary>
+    public bool IsUsed { get; set; }
 	
     /// <summary>
     /// Создать тикет.
@@ -42,7 +47,9 @@ public class AuthTicket
         return new AuthTicket
         {
             Id = Guid.NewGuid(),
-            Code = new Random().Next(100000, 999999).ToString(),
+            // TODO: Вернуть при деплое
+            //Code = new Random().Next(100000, 999999).ToString(),
+            Code = "111111",
             Login = login,
             DeviceDescription = deviceDescription,
             ExpiresAt = DateTime.UtcNow.AddMinutes(10)

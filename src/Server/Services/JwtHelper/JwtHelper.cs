@@ -18,8 +18,9 @@ public interface IJwtHelper
     /// </summary>
     /// <param name="user">Пользователь.</param>
     /// <param name="minutesValid">Время действия токена.</param>
+    /// <param name="deviceDescription">Описание устройства.</param>
     /// <returns>Токен доступа.</returns>
-    string CreateAccessToken(User user, int minutesValid);
+    string CreateAccessToken(User user, int minutesValid, string? deviceDescription = "");
 
     /// <summary>
     /// Создать токен обновления.
@@ -45,32 +46,30 @@ public class JwtHelper : IJwtHelper
         _jwtOptions = jwtOptions;
     }
     
-    /// <inheritdoc cref="IJwtHelper.CreateAccessToken(User, int)" />
-    public string CreateAccessToken(User user, int minutesValid)
+    /// <inheritdoc cref="IJwtHelper.CreateAccessToken(User, int, string?)" />
+    public string CreateAccessToken(User user, int minutesValid, string? deviceDescription = "")
     {
-        var subject = new ClaimsIdentity(new[]
+        var claims = new[]
         {
-            new Claim(ClaimsIdentity.DefaultIssuer, user.Id.ToString()),
-            new Claim(ClaimsIdentity.DefaultNameClaimType, user.FullName),
-            new Claim(ClaimsIdentity.DefaultRoleClaimType, user.Role.ToString()),
+            new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+            new Claim(ClaimTypes.Name, user.Name),
+            new Claim(ClaimTypes.Surname, user.Surname),
+            new Claim(ClaimTypes.Role, string.Join(",", user.Role.Policies)),
             new Claim(ClaimTypes.Email, user.Email),
             new Claim(ClaimTypes.MobilePhone, user.Phone),
-        });
-
-        var tokenDescriptor = new SecurityTokenDescriptor
-        {
-            Issuer = _jwtOptions.Issuer,
-            Audience = _jwtOptions.Audience,
-            IssuedAt = DateTime.UtcNow,
-            NotBefore = DateTime.UtcNow,
-            Expires = DateTime.UtcNow.AddMinutes(minutesValid),
-            Subject = subject,
-            SigningCredentials = new SigningCredentials(_jwtOptions.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256Signature)
+            new Claim(ClaimTypes.System, deviceDescription ?? string.Empty),
         };
-    
-        var tokenHandler = new JwtSecurityTokenHandler();
-        var token = tokenHandler.CreateToken(tokenDescriptor);
-        return tokenHandler.WriteToken(token);
+
+        var securityToken = new JwtSecurityToken(
+            issuer: _jwtOptions.Issuer,
+            audience: _jwtOptions.Audience,
+            claims: claims,
+            notBefore: DateTime.UtcNow,
+            expires: DateTime.UtcNow.AddMinutes(minutesValid),
+            signingCredentials: new SigningCredentials(_jwtOptions.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256Signature)
+        );
+        
+        return new JwtSecurityTokenHandler().WriteToken(securityToken);
     }
 
     /// <inheritdoc cref="IJwtHelper.CreateRefreshToken" />
