@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Seljmov.Blazor.Identity.Shared;
-using Server.Constants;
+using RouteConstants = Server.Constants.RouteConstants;
 
 namespace Server.ApiGroups;
 
