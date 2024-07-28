@@ -1,4 +1,5 @@
 using Seljmov.AspNet.Commons.Options;
+using Seljmov.Blazor.Identity.Shared;
 
 namespace Server.Options;
 
@@ -21,6 +22,11 @@ public class ApplicationOptions
     /// Настройки JWT-токена.
     /// </summary>
     public JwtOptions JwtOptions { get; set; } = default!;
+    
+    /// <summary>
+    /// Параметры конфигурации.
+    /// </summary>
+    public ConfigurationOptions ConfigurationOptions { get; set; } = default!;
 }
 
 /// <summary>

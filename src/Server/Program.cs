@@ -3,6 +3,7 @@ using Adeptik.Hosting.AspNet.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using Seljmov.AspNet.Commons.Helpers;
 using Seljmov.AspNet.Commons.Options;
+using Seljmov.Blazor.Identity.Server.ApiGroups;
 using Seljmov.Blazor.Identity.Shared;
 using Server;
 using Server.ApiGroups;
@@ -31,7 +32,8 @@ builder.Services.AddOptions<ApplicationOptions>()
     .ValidateOnStart()
     .Expose(applicationOptions => applicationOptions.CodeTemplateOptions)
     .Expose(applicationOptions => applicationOptions.SmtpClientOptions)
-    .Expose(applicationOptions => applicationOptions.JwtOptions);
+    .Expose(applicationOptions => applicationOptions.JwtOptions)
+    .Expose(applicationOptions => applicationOptions.ConfigurationOptions);
 
 builder.Services.AddScoped<IJwtHelper, JwtHelper>();
 builder.Services.AddScoped<IEmailCodeSender, EmailSenderService>();
@@ -60,6 +62,7 @@ app.UseRouting();
 
 app.MapUserGroup();
 app.MapAuthGroup();
+app.MapConfigurationGroup();
 
 app.MapRazorPages();
 app.MapControllers();

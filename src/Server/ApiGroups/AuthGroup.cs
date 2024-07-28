@@ -1,9 +1,9 @@
 using System.Text;
+using Contracts.Auth;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Seljmov.AspNet.Commons.Options;
 using Models;
-using Seljmov.Blazor.Identity.Shared;
 using Server.Constants;
 using Server.Services.CodeSender;
 using Server.Services.JwtHelper;

@@ -1,20 +1,10 @@
-﻿{
+{
   "profiles": {
-    "Users.Server": {
+    "Users.Client": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,
       "inspectUri": "{wsProtocol}://{url.hostname}:{url.port}/_framework/debug/ws-proxy?browser={browserInspectUri}",
-      "applicationUrl": "https://localhost:7721;http://localhost:5521",
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
-      }
-    },
-    "https": {
-      "commandName": "Project",
-      "dotnetRunMessages": true,
-      "launchBrowser": true,
-      "launchUrl": "swagger",
       "applicationUrl": "https://localhost:7721;http://localhost:5521",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
